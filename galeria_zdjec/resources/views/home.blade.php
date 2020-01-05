@@ -17,6 +17,11 @@
                     You are logged in!
                 </div>
             </div>
+            <br>
+            <h3>Go to your galleries now!</h3>
+            <br>
+            <a href="{{route("galleries.index")}}">Gallery!</a>
+
         </div>
     </div>
 </div>
