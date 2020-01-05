@@ -4,10 +4,11 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>PseudoInstagram</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
 
         <!-- Styles -->
         <style>html, body {
@@ -45,6 +46,8 @@
 
             .title {
                 font-size: 84px;
+                font-family: 'Pacifico', cursive;
+                color: #1b1e21;
             }
 
             .links > a {
@@ -80,8 +83,13 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    WĄSTOGRAM
+                    PSEUDOINSTAGRAM
                 </div>
+
+                <h2>
+                    Zaloguj się aby oglądać zdjęcia znajomych, albo nieznajomych, albo po prostu stalkować. <br>
+                    Jeżeli nie jesteś jeszcze zarejestrowany, możesz to zrobić wypełniając krótki formularz.
+                </h2>
 
             </div>
         </div>
