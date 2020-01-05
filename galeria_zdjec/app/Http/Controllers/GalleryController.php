@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Gallery;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class GalleryController extends Controller
 {
@@ -14,7 +15,8 @@ class GalleryController extends Controller
      */
     public function index()
     {
-        return view('galleries.index');
+        $images = Gallery::all();
+        return view('galleries.index', compact('images'));
     }
 
     /**
@@ -35,19 +37,29 @@ class GalleryController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate([
-            'fileUpload' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-        if ($files = $request->file('fileUpload')) {
-            $destinationPath = 'public/image/'; // upload path
-            $profileImage = date('YmdHis') . "." . $files->getClientOriginalExtension();
-            $files->move($destinationPath, $profileImage);
-            $insert['image'] = "$profileImage";
-        }
-        $check = Gallery::insertGetId($insert);
+        $validator      =   Validator::make($request->all(),
+            ['filename'      =>   'required|mimes:jpeg,png,jpg,bmp|max:2048']);
 
-        return redirect()->route("galleries.create")
-            ->withSuccess('Great! Image has been successfully uploaded.');
+        // if validation fails
+        if($validator->fails()) {
+            return back()->withErrors($validator->errors());
+        }
+
+        // if validation success
+        if($image   =   $request->file('filename')) {
+
+            $name      =   time().time().'.'.$image->getClientOriginalExtension();
+
+            $target_path    =   public_path('/uploads/');
+
+            if($image->move($target_path, $name)) {
+
+                // save file name in the database
+                $image   =   Gallery::create(['filename' => $name]);
+
+                return back()->with("success", "File uploaded successfully");
+            }
+        }
     }
 
     /**

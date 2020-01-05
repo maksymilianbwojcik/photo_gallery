@@ -1,42 +1,44 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="container mt-5">
+        <form action="{{ route('galleries.store') }}" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 m-auto">
+                    <div class="card shadow">
+                        <div class="card-header bg-info text-white">
+                            <div class="card-title ">
+                                <h4> Laravel 6 File Upload </h4>
+                            </div>
+                        </div>
 
-        <br><br><br>
-        @if ($message = Session::get('success'))
+                        <div class="card-body">
 
-            <div class="alert alert-success alert-block">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong>{{ $message }}</strong>
-            </div>
-            <br>
-        @endif
+                            <!-- print success message after file upload  -->
+                            @if(Session::has('success'))
+                                <div class="alert alert-success">
+                                    {{ Session::get('success') }}
+                                    @php
+                                        Session::forget('success');
+                                    @endphp
+                                </div>
+                            @endif
 
-        <h2>File Upload &amp; Image Preview</h2>
+                            <div class="form-group" {{ $errors->has('filename') ? 'has-error' : '' }}>
+                                <label for="filename"></label>
+                                <input type="file" name="filename" id="filename" class="form-control">
+                                <span class="text-danger"> {{ $errors->first('filename') }}</span>
+                            </div>
+                        </div>
 
-        <p class="lead">No Plugins <b>Just Javascript</b></p>
-
-        <!-- Upload  -->
-        <form id="file-upload-form" class="uploader" action="{{route('galleries.store')}}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
-            {{csrf_field()}}
-
-            @csrf
-            <input id="file-upload" type="file" name="fileUpload" accept="image/*" onchange="readURL(this);">
-
-            <label for="file-upload" id="file-drag">
-                <img id="file-image" src="#" alt="Preview" class="hidden">
-                <div id="start" >
-                    <i class="fa fa-download" aria-hidden="true"></i>
-                    <div>Select a file or drag here</div>
-                    <div id="notimage" class="hidden">Please select an image</div>
-                    <span id="file-upload-btn" class="btn btn-primary">Select a file</span>
-                    <br>
-                    <span class="text-danger">{{ $errors->first('fileUpload') }}</span>
-
+                        <div class="card-footer">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success btn-md"> Upload </button>
+                            </div>
+                            {{ csrf_field() }}
+                        </div>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-success">Submit</button>
-            </label>
-        </form>
+            </div>
     </div>
 @endsection
