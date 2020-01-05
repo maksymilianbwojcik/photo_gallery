@@ -24,7 +24,7 @@ class GalleryController extends Controller
      */
     public function create()
     {
-        //
+        return view('galleries.create');
     }
 
     /**
@@ -35,7 +35,19 @@ class GalleryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        request()->validate([
+            'fileUpload' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+        if ($files = $request->file('fileUpload')) {
+            $destinationPath = 'public/image/'; // upload path
+            $profileImage = date('YmdHis') . "." . $files->getClientOriginalExtension();
+            $files->move($destinationPath, $profileImage);
+            $insert['image'] = "$profileImage";
+        }
+        $check = Gallery::insertGetId($insert);
+
+        return redirect()->route("galleries.create")
+            ->withSuccess('Great! Image has been successfully uploaded.');
     }
 
     /**
